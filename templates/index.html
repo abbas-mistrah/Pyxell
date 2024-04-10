@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pyxell.ai Interface</title>
+    <script src="https://kit.fontawesome.com/391827d54c.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        @keyframes colorChange {
+            0% { color: rgba(255, 0, 0, 1); }
+            20% { color: rgba(0, 255, 0, 1); }
+            40% { color: rgba(0, 0, 255, 1); }
+            60% { color: rgba(255, 165, 0, 1); }
+            80% { color: rgba(128, 0, 128, 1); }
+            100% { color: rgba(255, 255, 0, 1); }
+        }
+
+       
+        .image-response {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .generated-image {
+            width: 500px; /* Set the maximum width of the image to 50% of the container */
+            height: 100px; /* Maintain the aspect ratio of the image */
+            border-radius: 20px;
+            margin-top: 30px;
+        }
+        .image-response img {
+            max-width: 100%;
+            height: auto;
+        }
+        .response {
+            margin-bottom: 10px;
+            padding: 10px;
+            left: 40%;
+
+            text-align: left; /* Align text to the left */
+        }
+
+        .response .user-query {
+            font-weight: bold;
+            color: black;
+        }
+
+        .not-found {
+            font-style: italic;
+            color: #777;
+        }
+
+        .code-block {
+            background-color: black;
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+            white-space: pre-wrap;
+        }
+
+       
+    </style>
+</head>
+<body>
+    
+    <div class="content">
+        <div class="logo">
+            <h1 id="LogoTitle" style="letter-spacing: -4px;">
+                <span style="color: #C4164A">P</span>
+                <span style="color: #B4197F">y</span>
+                <span style="color: #E8389D">x</span>
+                <span style="color: #E419B1">e</span>
+                <span style="color: #CB68A0">l</span>
+                <span style="color: #CB68A0">l.</span>
+                <span style="color: #CD3555">A</span>
+                <span style="color: #CD3555">I</span>
+            </h1>
+        </div>
+    </div>
+    
+    
+    <div id="responseContainer" class="response-container"></div>
+    
+        <div class="chatbox-input">
+            <i class="fa-regular fa-face-grin"></i>
+            <i class="fa-solid fa-paperclip" onclick="document.getElementById('image').click();"></i>
+            <input type="file" id="image" name="image" style="display: none;" onchange="handleImageUpload()">
+            <input type="text" id="searchInput" placeholder="Type your command and press Enter">
+            <i id="searchButton" onclick="submitCommand()" class="fa-solid fa-arrow-right"></i>
+            <i id="voiceButton" onclick="startVoiceRecognition()" class="fa-solid fa-microphone"></i>
+          </div>
+    </div>
+
+    <script>
+        // Bind the 'keypress' event to the input field
+document.getElementById("searchInput").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        submitCommand(); // Submit the form when Enter is pressed
+    }
+});
+function handleImageUpload() {
+    var formData = new FormData();
+    var inputFile = document.getElementById('image').files[0];
+    formData.append('image', inputFile);
+    
+    // Get the user query before sending the request
+    var userQuery = document.getElementById('searchInput').value.trim();
+    
+    // Set a default user query if no query is provided
+    if (userQuery === '') {
+        userQuery = 'you uploaded an image and the below is response to that';
+    }
+
+    fetch('/', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.response) {
+            displayResponse(data.response, userQuery); // Pass the user query to displayResponse function
+        } else {
+            displayError('No response received from the server.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        displayError('An error occurred while processing the request.');
+    });
+}
+
+
+
+        // Function to display the response in the response container
+        function displayResponse(response) {
+            var responseContainer = document.getElementById('responseContainer');
+            responseContainer.innerHTML = '<h2>Generated Text:</h2><p>' + response + '</p>';
+        }
+
+        // Function to display an error message
+        function displayError(message) {
+            var responseContainer = document.getElementById('responseContainer');
+            responseContainer.innerHTML = '<p style="color: red;">Error: ' + message + '</p>';
+        }
+
+        // Bind event listener to the upload button
+        document.getElementById('uploadButton').addEventListener('click', handleImageUpload);
+
+        function submitCommand() {
+            var searchButton = document.getElementById("searchButton");
+            searchButton.classList.add('loading');
+            var user_input = document.getElementById("searchInput").value.trim(); // Remove leading and trailing whitespace
+            // Clear the input field
+            document.getElementById("searchInput").value = "";
+            // Remove any trailing dots from the command
+            user_input = user_input.replace(/\.$/, ""); // Replace dot at the end of the string
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/command", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4) {
+                    console.log(xhr.responseText);
+                    var response = JSON.parse(xhr.responseText);
+                    if ("response" in response) {
+                        displayResponse(response.response, user_input); // Display server response along with user query
+                    } else if ("image_filename" in response) {
+                        displayImage(response, user_input); // Display generated image
+                    } else {
+                        displayNotFound(user_input); // Display message if query not found
+                    }
+                    // Update the execution status
+                    document.getElementById("executionStatus").innerText = "Command execution status: " + (response.response ? "Success" : "Failed");
+                    searchButton.classList.remove('loading');
+                }
+            };
+            xhr.send("user_input=" + encodeURIComponent(user_input));
+        }
+        
+
+
+        // Bind the 'keypress' event to the input field
+        document.getElementById("searchInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                submitCommand(); // Submit the form when Enter is pressed
+            }
+        });
+
+        function startVoiceRecognition() {
+            var recognition = new webkitSpeechRecognition(); // Create SpeechRecognition object
+            recognition.lang = 'en-US'; // Set language to English
+            recognition.start(); // Start recognition
+        
+            recognition.onresult = function(event) {
+                var command = event.results[0][0].transcript.toLowerCase().trim(); // Get the recognized command and remove leading/trailing whitespace
+                command = command.replace(/\.$/, "").trim(); // Remove trailing dot if present and trim again
+                document.getElementById('searchInput').value = command; // Set the command to the input field
+                submitCommand(); // Submit the form
+            };
+        
+            recognition.onerror = function(event) {
+                console.error('Speech recognition error occurred: ' + event.error);
+            };
+        }
+        
+
+        // Function to display response in the response container
+        function displayResponse(response, userQuery) {
+            var responseContainer = document.getElementById('responseContainer');
+            var newResponse = document.createElement('div');
+            newResponse.classList.add('response');
+            newResponse.innerHTML = '<div class="user-query">' + 
+                '<img src="{{ url_for('static', filename='usericon.png') }}" alt="Pyxell.ai Logo" class="logo-image">' + 
+                '<span class="query-text">' + userQuery + '</span>' +
+                '</div>' +
+                '<div class="server-response">' + 
+                    '<img src="{{ url_for('static', filename='logo.png') }}" alt="Pyxell.ai Logo" class="server-image">' + 
+                    '<span class="server-text">' + response + '</span>' +
+                    '</div>'        
+            responseContainer.insertBefore(newResponse, responseContainer.firstChild); // Insert new response at the top
+        }
+
+        // Function to display message if query not found
+        function displayNotFound(userQuery) {
+            var responseContainer = document.getElementById('responseContainer');
+            var newResponse = document.createElement('div');
+            newResponse.classList.add('response');
+            newResponse.classList.add('not-found');
+            newResponse.innerHTML = '<div class="user-query">User Query: ' + userQuery + '</div>' + '<div class="server-response">Sorry, the query was not found.</div>';
+            responseContainer.insertBefore(newResponse, responseContainer.firstChild); // Insert new response at the top
+        }
+        function displayImage(responseData, userQuery) {
+            var responseContainer = document.getElementById('responseContainer');
+            var newResponse = document.createElement('div');
+            newResponse.classList.add('response');
+            newResponse.classList.add('image-response');
+        
+            // Create an image element and set the src attribute to the image URL
+            var img = document.createElement('img');
+            img.src = `/images/${responseData.image_filename}`;
+            img.alt = 'Generated Image';
+            img.classList.add('generated-image'); // Add a class to the image element
+        
+            newResponse.innerHTML = '<div class="user-query"><img src="{{ url_for('static', filename='usericon.png') }}" alt="Pyxell.ai Logo" class="logo-image">' +  '<span class="query-text">' + userQuery + '</span>' + '</div>' + '<div class="server-response"> ' + '<img src="{{ url_for('static', filename='logo.png') }}" alt="Pyxell.ai Logo" class="server-image">' + img.outerHTML + '</div>';
+            responseContainer.insertBefore(newResponse, responseContainer.firstChild); // Insert new response at the top
+        }
+    </script>
+</body>
+</html>

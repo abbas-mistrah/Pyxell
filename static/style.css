@@ -1,0 +1,260 @@
+ html, body {
+    overflow-x: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* Example background color */
+
+
+}
+  
+  .navbar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100px; /* Adjust width as needed */
+    /* height: 100%; Make it full height */
+    background-color: #fff; /* Example background color */
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+  
+.hamburger-menu {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.hamburger-menu .bar {
+  width: 50px;
+  height: 10px;
+  background-color: #ffe600;
+  margin: 10px 0;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+
+}
+
+  .content {
+    text-align: center;
+   /* // padding-top: 50px; Adjust as needed for your design */
+  }
+  
+  .logo img {
+    width: 200px; /* Adjust as needed for your design */
+    height: auto;
+  }
+  
+  .search-container {
+    position: relative;
+    width: 80%;
+    margin: 30px auto; /* Center the search container */
+    max-width: 600px; /* Maximum width */
+}
+
+.search-container input[type="text"] {
+  width: 70%;
+  padding: 15px 45px 15px 20px; /* Make room for the button on the right */
+  border: 2px solid #48C9B0; /* Add border for the input */
+  border-radius: 50px; /* Fully rounded ends */
+  font-size: 18px; /* Slightly larger font size */
+  outline: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.input-container {
+  position: fixed;
+  bottom: 0;
+  /* left: 0; */
+  width: 100%;
+  background-color: #f0f0f0;
+  /* padding: 10px; */
+  display: flex;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);  */
+}
+.search-container {
+  position: relative;
+  width: calc(80% - 50px); 
+  margin: 30px auto;
+  max-width: 600px;
+}
+
+.search-container input[type="text"] {
+  width: 73%;
+  padding: 15px 45px 15px 50px; 
+  border: 2px solid #48C9B0;
+  border-radius: 50px;
+  font-size: 18px;
+  outline: none;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+#microphoneIcon {
+  position: absolute;
+  left: 15px;
+  top: 15px;
+  color: gray;
+  z-index: 1; 
+}
+
+/* #searchButton {
+  position: absolute;
+  right: 57px;
+  font-size: 2em;
+  font-weight: bolder;
+  color: #fff;
+  top: 0;
+  bottom: 0;
+  width: 60px;
+  background-color: #48C9B0;
+  text-align: center;
+  line-height: 55px;
+  border-radius: 100%;
+  cursor: pointer;
+} */
+/* #searchButton {
+  position: absolute;
+  position: absolute;
+  right: 57px;
+  font-size: 2em;
+  font-weight: bolder;
+  color: #fff;
+  top: 0;
+  bottom: 0;
+  width: 50px;
+  background-color: #48C9B0;
+  text-align: center;
+  line-height: 55px;
+  border-radius: 50%;
+  cursor: pointer;
+} */
+#voiceButton {
+  left: 30%; /* Adjust as needed */
+}
+
+
+#LogoTitle{
+    color: #fff;
+    font-size: 3em;
+
+}  
+#InputTitle{
+    color: #fff;
+    font-size: 2em;
+
+}
+.response-container {
+  width: 60%;
+  margin: 10px auto;
+  padding: 10px;
+  padding-left: 10%;
+  height: 70%;
+  overflow-y: auto; /* Add vertical scroll if content exceeds height */
+}
+.response-containe {
+  width: 30%;
+  margin: 10px auto;
+  padding: 10px;
+  /* border-radius: 5px; */
+  /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); */
+}
+
+.user-query {
+  display: flex;
+  align-items: center; /* Center vertically */
+}
+
+.query-text {
+  margin-left: 10px; /* Adjust spacing between image and text */
+  color: #000;
+  font-size: 20px;
+  font-weight: 300;
+  background-color: palevioletred;
+  border-radius: 50px;
+  padding: 20px;
+
+
+}
+
+.logo-image {
+  width: 50px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+.server-response {
+  display: flex;
+  align-items: center; /* Center vertically */
+  margin-top: 20px;
+}
+
+.server-text {
+  margin-left: 10px; /* Adjust spacing between image and text */
+  color: #000;
+  font-size: 20px;
+  font-weight: 500;
+  background-color: pink;
+  border-radius: 50px;
+  padding: 20px;
+}
+
+.logo-image {
+  width: 50px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+.server-image {
+  width: 55px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  margin-top: 20; /* Position at the top of the container */
+  left: 0; /* Position at the left of the container */
+}
+.chatbox-input {
+  position: fixed;
+  bottom: 10px;
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Center horizontally */
+  width: 60%; /* Set width to 60% */
+  height: 60px;
+  border-radius: 50px;
+  background: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px; /* Add padding */
+  box-sizing: border-box; /* Include padding in the width calculation */
+  z-index: 1; /* Ensure it's above other content */
+}
+
+.chatbox-input i {
+  cursor: pointer;
+  font-size: 1.8em;
+  color: #515855;
+  padding: 10px;
+}
+
+.chatbox-input i:first-child {
+  margin-left: 15px; /* Adjust margin */
+}
+
+.chatbox-input i:last-child {
+  margin-right: 15px; /* Adjust margin */
+}
+
+.chatbox-input input {
+  flex-grow: 1; /* Take remaining space */
+  margin: 0; /* Remove margin */
+  padding: 10px; /* Adjust padding */
+  border-radius: 10px;
+  font-size: 1em;
+  border: none;
+  outline: none;
+}
+@media (max-width: 768px) {
+  .chatbox-input {
+    width: 100%;
+    border-radius: 0;
+  }
+  .response-container {
+    width: 90%;
+  }
+}
