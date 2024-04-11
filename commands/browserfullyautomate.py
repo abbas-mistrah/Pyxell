@@ -191,6 +191,10 @@ def process_command(query):
     """Processes given query and performs appropriate action."""
     words = query.lower().replace(", ", "").split()
 
+    if not words:
+        print("Empty query.")
+        return
+
     first_part = words[0].replace('.', '')
 
     if first_part in FUNCTIONS:

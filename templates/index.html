@@ -95,11 +95,7 @@
 
     <script>
         // Bind the 'keypress' event to the input field
-document.getElementById("searchInput").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        submitCommand(); // Submit the form when Enter is pressed
-    }
-});
+
 function handleImageUpload() {
     var formData = new FormData();
     var inputFile = document.getElementById('image').files[0];
@@ -146,8 +142,22 @@ function handleImageUpload() {
         }
 
         // Bind event listener to the upload button
-        document.getElementById('uploadButton').addEventListener('click', handleImageUpload);
-
+        document.addEventListener("DOMContentLoaded", function() {
+            // Bind the 'keypress' event to the input field
+            document.getElementById("searchInput").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    submitCommand(); // Submit the form when Enter is pressed
+                }
+            });
+        
+            // Bind event listener to the upload button
+        
+            // Bind event listener to the search button
+            document.getElementById("searchButton").addEventListener("click", submitCommand);
+        
+            // Bind event listener to the voice button
+            document.getElementById("voiceButton").addEventListener("click", startVoiceRecognition);
+        });
         function submitCommand() {
             var searchButton = document.getElementById("searchButton");
             searchButton.classList.add('loading');
@@ -171,7 +181,6 @@ function handleImageUpload() {
                         displayNotFound(user_input); // Display message if query not found
                     }
                     // Update the execution status
-                    document.getElementById("executionStatus").innerText = "Command execution status: " + (response.response ? "Success" : "Failed");
                     searchButton.classList.remove('loading');
                 }
             };
@@ -179,13 +188,6 @@ function handleImageUpload() {
         }
         
 
-
-        // Bind the 'keypress' event to the input field
-        document.getElementById("searchInput").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                submitCommand(); // Submit the form when Enter is pressed
-            }
-        });
 
         function startVoiceRecognition() {
             var recognition = new webkitSpeechRecognition(); // Create SpeechRecognition object
