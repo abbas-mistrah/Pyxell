@@ -97,6 +97,5 @@ def command():
 def serve_image(filename):
     image_path = os.path.join(tempfile.gettempdir(), filename)
     return send_file(image_path, mimetype='image/png')
-
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    app.run(debug=False, host='0.0.0.0', port=80)
