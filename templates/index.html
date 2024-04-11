@@ -218,8 +218,10 @@ function handleImageUpload() {
                     '<img src="{{ url_for('static', filename='logo.png') }}" alt="Pyxell.ai Logo" class="server-image">' + 
                     '<span class="server-text">' + response + '</span>' +
                     '</div>'        
-            responseContainer.insertBefore(newResponse, responseContainer.firstChild); // Insert new response at the top
-        }
+                    responseContainer.appendChild(newResponse);
+                    newResponse.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                }
 
         // Function to display message if query not found
         function displayNotFound(userQuery) {
@@ -243,7 +245,9 @@ function handleImageUpload() {
             img.classList.add('generated-image'); // Add a class to the image element
         
             newResponse.innerHTML = '<div class="user-query"><img src="{{ url_for('static', filename='usericon.png') }}" alt="Pyxell.ai Logo" class="logo-image">' +  '<span class="query-text">' + userQuery + '</span>' + '</div>' + '<div class="server-response"> ' + '<img src="{{ url_for('static', filename='logo.png') }}" alt="Pyxell.ai Logo" class="server-image">' + img.outerHTML + '</div>';
-            responseContainer.insertBefore(newResponse, responseContainer.firstChild); // Insert new response at the top
+            responseContainer.appendChild(newResponse);
+            newResponse.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
         }
     </script>
 </body>
