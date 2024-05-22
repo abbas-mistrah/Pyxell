@@ -1,6 +1,6 @@
                                     Pyxell.ai: The Autonomous Digital Companion
 
-             ![Pyxell2](https://github.com/MISTRAL2024/Pyxell/assets/151589285/ee1601bb-1bc4-4aa8-ac6f-d7e58bc8b5ad)
+![Pyxell2](https://github.com/MISTRAL2024/Pyxell/assets/151589285/ee1601bb-1bc4-4aa8-ac6f-d7e58bc8b5ad)
 
 Pyxell.ai is an advanced AI platform designed to autonomously manage your digital tasks with unparalleled efficiency. It’s a self-operating system that integrates seamlessly across various devices, from PCs to smartphones, smartwatches, and even your car or VR glasses.
 
