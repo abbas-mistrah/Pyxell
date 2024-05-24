@@ -1,4 +1,4 @@
-                                    Pyxell.ai: The Autonomous Digital Companion
+   Pyxell.ai: The Autonomous Digital Companion
 
 ![Pyxell2](https://github.com/MISTRAL2024/Pyxell/assets/151589285/ee1601bb-1bc4-4aa8-ac6f-d7e58bc8b5ad)
 
